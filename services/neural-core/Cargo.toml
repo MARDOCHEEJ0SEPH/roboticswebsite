@@ -1,0 +1,36 @@
+[package]
+name = "neural-core"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+tokio = { version = "1.35", features = ["full"] }
+actix-web = "4.4"
+actix-rt = "2.9"
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+reqwest = { version = "0.11", features = ["json"] }
+sqlx = { version = "0.7", features = ["runtime-tokio-native-tls", "postgres", "json"] }
+redis = { version = "0.24", features = ["tokio-comp", "json"] }
+chrono = { version = "0.4", features = ["serde"] }
+uuid = { version = "1.6", features = ["v4", "serde"] }
+log = "0.4"
+env_logger = "0.11"
+dotenv = "0.15"
+async-trait = "0.1"
+futures = "0.3"
+rand = "0.8"
+
+[profile.release]
+opt-level = 3
+lto = true
+codegen-units = 1
+strip = true
+
+[lib]
+name = "neural_core"
+path = "src/lib.rs"
+
+[[bin]]
+name = "neural-core"
+path = "src/main.rs"

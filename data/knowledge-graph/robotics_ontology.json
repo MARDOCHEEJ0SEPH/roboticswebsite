@@ -1,0 +1,268 @@
+{
+  "name": "Robotics Domain Knowledge Graph",
+  "version": "1.0.0",
+  "description": "Comprehensive knowledge graph for industrial robotics and automation",
+
+  "entities": {
+    "robot_types": [
+      {
+        "id": "industrial_robot",
+        "name": "Industrial Robot",
+        "category": "Robot Type",
+        "properties": {
+          "typical_applications": ["Manufacturing", "Assembly", "Welding", "Material Handling"],
+          "payload_range": "5kg - 1000kg+",
+          "reach_range": "500mm - 3500mm",
+          "accuracy": "±0.02mm - ±0.5mm",
+          "cost_range": "$25,000 - $500,000"
+        },
+        "subcategories": [
+          "six_axis_robot",
+          "scara_robot",
+          "delta_robot",
+          "cartesian_robot"
+        ]
+      },
+      {
+        "id": "collaborative_robot",
+        "name": "Collaborative Robot (Cobot)",
+        "category": "Robot Type",
+        "properties": {
+          "typical_applications": ["Assembly", "Pick and Place", "Machine Tending", "Quality Inspection"],
+          "payload_range": "3kg - 35kg",
+          "reach_range": "500mm - 1800mm",
+          "safety_features": ["Force limiting", "Speed monitoring", "Collision detection"],
+          "cost_range": "$20,000 - $75,000",
+          "programming": "Easy - Visual programming available"
+        },
+        "vendors": ["Universal Robots", "FANUC", "ABB", "KUKA", "Techman"]
+      },
+      {
+        "id": "mobile_robot",
+        "name": "Autonomous Mobile Robot (AMR)",
+        "category": "Robot Type",
+        "properties": {
+          "typical_applications": ["Warehouse Logistics", "Material Transport", "Inventory Management"],
+          "payload_range": "100kg - 1500kg",
+          "navigation": ["LiDAR", "Vision", "Natural Navigation"],
+          "cost_range": "$30,000 - $150,000"
+        },
+        "subcategories": ["amr", "agv"]
+      }
+    ],
+
+    "applications": [
+      {
+        "id": "industrial_automation",
+        "name": "Industrial Automation",
+        "category": "Application Area",
+        "properties": {
+          "industries": ["Automotive", "Electronics", "Aerospace", "Metal Fabrication"],
+          "roi_timeline": "12-24 months",
+          "productivity_gain": "200-400%",
+          "quality_improvement": "85-95%"
+        },
+        "related_robots": ["industrial_robot", "collaborative_robot"]
+      },
+      {
+        "id": "warehouse_automation",
+        "name": "Warehouse Automation",
+        "category": "Application Area",
+        "properties": {
+          "industries": ["E-commerce", "Retail", "3PL", "Manufacturing"],
+          "roi_timeline": "18-30 months",
+          "throughput_increase": "300-500%",
+          "accuracy_improvement": "99.5%+"
+        },
+        "related_robots": ["mobile_robot", "industrial_robot"]
+      },
+      {
+        "id": "assembly_operations",
+        "name": "Assembly Operations",
+        "category": "Application Area",
+        "properties": {
+          "tasks": ["Part insertion", "Screw driving", "Component placement", "Testing"],
+          "cycle_time_reduction": "50-75%",
+          "consistency_improvement": "95%+"
+        },
+        "related_robots": ["collaborative_robot", "scara_robot"]
+      }
+    ],
+
+    "technologies": [
+      {
+        "id": "machine_vision",
+        "name": "Machine Vision",
+        "category": "Technology",
+        "properties": {
+          "applications": ["Quality inspection", "Part identification", "Guidance"],
+          "accuracy": "99.9%+",
+          "integration_cost": "$5,000 - $50,000"
+        }
+      },
+      {
+        "id": "force_torque_sensing",
+        "name": "Force/Torque Sensing",
+        "category": "Technology",
+        "properties": {
+          "applications": ["Assembly", "Polishing", "Deburring", "Contact tasks"],
+          "sensitivity": "0.1N - 0.5N"
+        }
+      },
+      {
+        "id": "ai_ml",
+        "name": "AI & Machine Learning",
+        "category": "Technology",
+        "properties": {
+          "applications": ["Path planning", "Quality prediction", "Predictive maintenance"],
+          "benefits": ["Adaptive behavior", "Continuous improvement", "Anomaly detection"]
+        }
+      }
+    ],
+
+    "vendors": [
+      {
+        "id": "fanuc",
+        "name": "FANUC",
+        "category": "Vendor",
+        "properties": {
+          "specialization": "Industrial robots, CNCs",
+          "market_position": "Leader",
+          "product_range": "Wide",
+          "support": "Excellent"
+        }
+      },
+      {
+        "id": "abb",
+        "name": "ABB Robotics",
+        "category": "Vendor",
+        "properties": {
+          "specialization": "Industrial & collaborative robots",
+          "market_position": "Leader",
+          "innovation": "High"
+        }
+      },
+      {
+        "id": "universal_robots",
+        "name": "Universal Robots",
+        "category": "Vendor",
+        "properties": {
+          "specialization": "Collaborative robots",
+          "market_position": "Cobot leader",
+          "ease_of_use": "Excellent"
+        }
+      }
+    ]
+  },
+
+  "relationships": [
+    {
+      "source": "collaborative_robot",
+      "target": "industrial_robot",
+      "relationship": "subset_of",
+      "properties": {
+        "key_difference": "Safety certification for human collaboration"
+      }
+    },
+    {
+      "source": "industrial_automation",
+      "target": "industrial_robot",
+      "relationship": "uses",
+      "properties": {
+        "criticality": "high"
+      }
+    },
+    {
+      "source": "warehouse_automation",
+      "target": "mobile_robot",
+      "relationship": "primarily_uses",
+      "properties": {
+        "adoption_rate": "high"
+      }
+    },
+    {
+      "source": "collaborative_robot",
+      "target": "assembly_operations",
+      "relationship": "ideal_for",
+      "properties": {
+        "reason": "Flexibility and safety for small-batch assembly"
+      }
+    },
+    {
+      "source": "machine_vision",
+      "target": "industrial_robot",
+      "relationship": "enhances",
+      "properties": {
+        "benefit": "Enables adaptive and intelligent behavior"
+      }
+    }
+  ],
+
+  "business_metrics": {
+    "roi_factors": [
+      {
+        "factor": "labor_cost_savings",
+        "weight": 0.40,
+        "typical_range": "30-70% reduction"
+      },
+      {
+        "factor": "productivity_gain",
+        "weight": 0.30,
+        "typical_range": "200-400% increase"
+      },
+      {
+        "factor": "quality_improvement",
+        "weight": 0.20,
+        "typical_range": "85-95% defect reduction"
+      },
+      {
+        "factor": "throughput_increase",
+        "weight": 0.10,
+        "typical_range": "150-300% increase"
+      }
+    ],
+
+    "implementation_timeline": {
+      "assessment": "1-2 weeks",
+      "planning": "2-4 weeks",
+      "procurement": "4-12 weeks",
+      "integration": "4-8 weeks",
+      "training": "1-2 weeks",
+      "optimization": "2-4 weeks",
+      "total_typical": "14-32 weeks"
+    },
+
+    "cost_breakdown": {
+      "robot_hardware": "40-50%",
+      "end_effectors": "10-15%",
+      "safety_systems": "10-15%",
+      "integration": "20-30%",
+      "training": "5-10%"
+    }
+  },
+
+  "market_intelligence": {
+    "growth_rates": {
+      "industrial_robots": "12% CAGR",
+      "collaborative_robots": "25% CAGR",
+      "mobile_robots": "18% CAGR",
+      "overall_market": "15% CAGR"
+    },
+
+    "adoption_drivers": [
+      "Labor shortage",
+      "Quality requirements",
+      "Cost reduction pressure",
+      "Flexibility needs",
+      "Technology advancement"
+    ],
+
+    "barriers": [
+      "Initial investment",
+      "Technical complexity",
+      "Change management",
+      "Skills gap",
+      "Integration challenges"
+    ]
+  }
+}
