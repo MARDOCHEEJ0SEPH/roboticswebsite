@@ -361,14 +361,4 @@ The system automatically scales based on load:
 - **Load Balancing**: Nginx distributes traffic
 - **Database Replication**: PostgreSQL streaming replication
 
-## 📞 Support
 
-- **Documentation**: [docs/](./docs/)
-- **Issues**: GitHub Issues
-- **Email**: support@roboticswebsite.com
-
----
-
-**Built with ❤️ by humans, operated by AI**
-
-*A self-evolving digital organism that never sleeps, continuously learns, and relentlessly optimizes for success.*
