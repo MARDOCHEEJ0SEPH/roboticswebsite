@@ -1,0 +1,175 @@
+version: '3.8'
+
+services:
+  # MongoDB Database
+  mongodb:
+    image: mongo:7
+    container_name: coachhub-mongodb
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: coachhub_admin_pass
+      MONGO_INITDB_DATABASE: coachhub
+    volumes:
+      - mongodb_data:/data/db
+      - ./database/init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js:ro
+    networks:
+      - coachhub-network
+
+  # Redis Cache
+  redis:
+    image: redis:7-alpine
+    container_name: coachhub-redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    command: redis-server --appendonly yes
+    volumes:
+      - redis_data:/data
+    networks:
+      - coachhub-network
+
+  # Backend API (Node.js + JavaScript Framework)
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: coachhub-backend
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    environment:
+      NODE_ENV: development
+      PORT: 8000
+      MONGODB_URI: mongodb://admin:coachhub_admin_pass@mongodb:27017/coachhub?authSource=admin
+      REDIS_URL: redis://redis:6379
+      JWT_SECRET: ${JWT_SECRET:-your-secret-key-change-in-production}
+      STRIPE_SECRET_KEY: ${STRIPE_SECRET_KEY}
+      STRIPE_WEBHOOK_SECRET: ${STRIPE_WEBHOOK_SECRET}
+      FRONTEND_URL: http://localhost:3000
+      AI_ENGINE_URL: http://ai-engine:8001
+      PAYMENT_SERVICE_URL: http://payment-service:8080
+      SESSION_SERVICE_URL: http://session-service:8090
+    depends_on:
+      - mongodb
+      - redis
+    volumes:
+      - ./backend/src:/app/src
+      - ./frameworks:/frameworks
+    networks:
+      - coachhub-network
+
+  # AI Engine (Python + Python Framework)
+  ai-engine:
+    build:
+      context: ./ai-engine
+      dockerfile: Dockerfile
+    container_name: coachhub-ai-engine
+    restart: unless-stopped
+    ports:
+      - "8001:8001"
+    environment:
+      MONGODB_URI: mongodb://admin:coachhub_admin_pass@mongodb:27017/coachhub?authSource=admin
+      REDIS_URL: redis://redis:6379
+      OPENAI_API_KEY: ${OPENAI_API_KEY}
+      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY}
+    depends_on:
+      - mongodb
+      - redis
+    volumes:
+      - ./ai-engine:/app
+      - ./frameworks:/frameworks
+    networks:
+      - coachhub-network
+
+  # Payment Service (Rust + Rust Framework)
+  payment-service:
+    build:
+      context: ./payment-service
+      dockerfile: Dockerfile
+    container_name: coachhub-payment-service
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    environment:
+      RUST_LOG: info
+      REDIS_URL: redis://redis:6379
+      STRIPE_SECRET_KEY: ${STRIPE_SECRET_KEY}
+      STRIPE_WEBHOOK_SECRET: ${STRIPE_WEBHOOK_SECRET}
+    depends_on:
+      - redis
+    volumes:
+      - ./payment-service:/app
+      - ./frameworks:/frameworks
+    networks:
+      - coachhub-network
+
+  # Session Service (Go + Go Framework)
+  session-service:
+    build:
+      context: ./session-service
+      dockerfile: Dockerfile
+    container_name: coachhub-session-service
+    restart: unless-stopped
+    ports:
+      - "8090:8090"
+    environment:
+      MONGODB_URI: mongodb://admin:coachhub_admin_pass@mongodb:27017/coachhub?authSource=admin
+      REDIS_URL: redis://redis:6379
+      AGORA_APP_ID: ${AGORA_APP_ID}
+      AGORA_APP_CERTIFICATE: ${AGORA_APP_CERTIFICATE}
+    depends_on:
+      - mongodb
+      - redis
+    volumes:
+      - ./session-service:/app
+      - ./frameworks:/frameworks
+    networks:
+      - coachhub-network
+
+  # Frontend (Next.js)
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: coachhub-frontend
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      NEXT_PUBLIC_API_URL: http://localhost:8000
+      NEXT_PUBLIC_STRIPE_PUBLIC_KEY: ${STRIPE_PUBLIC_KEY}
+      NEXT_PUBLIC_AGORA_APP_ID: ${AGORA_APP_ID}
+    depends_on:
+      - backend
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+      - /app/.next
+    networks:
+      - coachhub-network
+
+  # Nginx API Gateway
+  nginx:
+    image: nginx:alpine
+    container_name: coachhub-nginx
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - backend
+      - frontend
+    networks:
+      - coachhub-network
+
+volumes:
+  mongodb_data:
+  redis_data:
+
+networks:
+  coachhub-network:
+    driver: bridge
