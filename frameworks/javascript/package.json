@@ -1,0 +1,62 @@
+{
+  "name": "@autonomous-robotics/neural-framework-js",
+  "version": "1.0.0",
+  "description": "Autonomous Neural Framework for JavaScript - Self-evolving robotics website",
+  "main": "src/index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "nodemon src/index.js",
+    "test": "jest",
+    "build": "webpack --mode production",
+    "lint": "eslint src/**/*.js",
+    "format": "prettier --write src/**/*.js"
+  },
+  "keywords": [
+    "autonomous",
+    "ai",
+    "neural-network",
+    "self-evolving",
+    "robotics",
+    "automation"
+  ],
+  "author": "Autonomous Robotics Team",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.2",
+    "socket.io": "^4.6.1",
+    "openai": "^4.20.1",
+    "@anthropic-ai/sdk": "^0.9.1",
+    "axios": "^1.6.2",
+    "redis": "^4.6.11",
+    "pg": "^8.11.3",
+    "mongoose": "^8.0.3",
+    "bull": "^4.11.5",
+    "winston": "^3.11.0",
+    "dotenv": "^16.3.1",
+    "joi": "^17.11.0",
+    "jsonwebtoken": "^9.0.2",
+    "bcryptjs": "^2.4.3",
+    "helmet": "^7.1.0",
+    "cors": "^2.8.5",
+    "compression": "^1.7.4",
+    "rate-limiter-flexible": "^3.0.4",
+    "uuid": "^9.0.1",
+    "dayjs": "^1.11.10",
+    "lodash": "^4.17.21",
+    "eventemitter3": "^5.0.1"
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.5",
+    "eslint": "^8.56.0",
+    "prettier": "^3.1.1",
+    "jest": "^29.7.0",
+    "nodemon": "^3.0.2",
+    "webpack": "^5.89.0",
+    "webpack-cli": "^5.1.4"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0"
+  }
+}
